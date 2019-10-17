@@ -1,0 +1,24 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "DiamondSeaTurtle-20191016211420"
+    },
+    "appServicePlanName": {
+      "value": "DiamondSeaTurtle-20191016211558"
+    },
+    "sku": {
+      "value": "B1"
+    },
+    "linuxFxVersion": {
+      "value": "node|10.14"
+    },
+    "subscriptionId": {
+      "value": "520b1005-05d2-41ee-9fef-5efae6cdf890"
+    },
+    "location": {
+      "value": "Central US"
+    }
+  }
+}
