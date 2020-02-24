@@ -2,6 +2,7 @@
 const express = require("express");
 const mongoService = require("../mongo/mongoService");
 const sampleData = require("../sampleData");
+const portdata = require("../portdata");
 
 
 const router = express.Router();
@@ -26,7 +27,7 @@ router.get(CONSTANTS.ENDPOINT.MASTERDETAIL, (req, res) => {
 
 // Grid Page Endpoint
 router.get(CONSTANTS.ENDPOINT.GRID, (req, res) => {
-  res.json(sampleData.textAssets);
+  res.json(portdata.textAssets);
 });
 
 
