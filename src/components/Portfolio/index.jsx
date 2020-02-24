@@ -53,18 +53,18 @@ export default class Portfolio extends Component {
       <main id="mainContent">
         <div className={classnames("text-center", styles.header)}>
           <h1>DiamondSeaTurtle</h1>
-          <p>This is placeholder text. Your web app description goes here.</p>
+          <p></p>
           <a
-            href="https://github.com/Microsoft/WebTemplateStudio"
+            href="https://github.com/diamondseaturtle/ProductionWeb"
             className="btn btn-primary my-2"
           >
-            Link to our Github
+            Link to Github
           </a>
         </div>
 
         <div className="container">
           <div className="row justify-content-center py-5">
-            <h1>Bootstrap Portfolio Template</h1>
+            <h1>Digital Art Pieces</h1>
           </div>
 
           <div className="row justify-content-around text-center pb-5">
@@ -73,7 +73,7 @@ export default class Portfolio extends Component {
                 key={textAssets.id}
                 header={textAssets.title}
                 description={textAssets.shortDescription}
-                image={GreyBox}
+                image={textAssets.image}
               />
             ))}
           </div>
