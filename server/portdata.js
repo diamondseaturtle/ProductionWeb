@@ -37,6 +37,17 @@ portdata.textAssets = [
     orderDate: new Date(2017, 5, 24).toDateString(),
     id: 2,
     image: "doc.jpg"
+  },
+  {
+    shortDescription: "Landscape study of sorts.",
+    longDescription: longPDesc,
+    title: "Field Testing",
+    status: "Closed",
+    shipTo: "Soo Jung Lee",
+    orderTotal: 1760.0,
+    orderDate: new Date(2017, 5, 24).toDateString(),
+    id: 2,
+    image: "outhere.jpg"
   }
 ];
 
