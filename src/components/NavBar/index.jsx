@@ -27,6 +27,9 @@ export default function NavBar() {
           <Link className="nav-item nav-link active" to="Message_Board">
             Message_Board
           </Link>
+          <Link className="nav-item nav-link active" to="COVID19">
+            COVID19
+          </Link>
         </div>
       </nav>
     </React.Fragment>

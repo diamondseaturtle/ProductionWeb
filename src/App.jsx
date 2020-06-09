@@ -8,6 +8,7 @@ import Home from "./components/Home";
 import Portfolio from "./components/Portfolio";
 import Miscellaneous from "./components/Miscellaneous";
 import Message_Board from "./components/Message_Board";
+import COVID19 from "./components/COVID19";
 //TODO Web Template Studio: Add routes for your new pages here.
 class App extends Component {
   render() {
@@ -20,6 +21,7 @@ class App extends Component {
           <Route path = "/Portfolio" component = { Portfolio } />
           <Route path = "/Miscellaneous" component = { Miscellaneous } />
           <Route path = "/Message_Board" component = { Message_Board } />
+          <Route path = "/COVID19" component = { COVID19 } />
         </Switch>
         <Footer />
       </React.Fragment>
