@@ -44,9 +44,9 @@ portdata.textAssets = [
     title: "Field Testing",
     status: "Closed",
     shipTo: "Soo Jung Lee",
-    orderTotal: 1760.0,
-    orderDate: new Date(2017, 5, 24).toDateString(),
-    id: 2,
+    orderTotal: 1761.0,
+    orderDate: new Date(2017, 6, 24).toDateString(),
+    id: 3,
     image: "outhere.jpg"
   }
 ];
