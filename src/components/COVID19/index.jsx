@@ -5,7 +5,12 @@ import WarningMessage from "../WarningMessage";
 import GreyBox from "../../images/GreyBox.svg";
 import styles from "./grid.module.css";
 import CONSTANTS from "../../constants";
+import Chart from "react-google-charts";
 
+var graphData = [
+  ['State', 'Confirmed Cases'],
+  
+];
 export default class COVID19 extends Component {
   constructor(props) {
     super(props);
@@ -18,14 +23,21 @@ export default class COVID19 extends Component {
     this.handleWarningClose = this.handleWarningClose.bind(this);
   }
 
+
   // Get the text sample data from the back end
   componentDidMount() {
-    fetch(CONSTANTS.ENDPOINT.GRID)
+    fetch("https://covidtracking.com/api/v1/states/current.json")
       .then(response => {
         if (!response.ok) {
           throw Error(response.statusText);
         }
         return response.json();
+      })
+      .then((data) => {
+        for (var i = 0; i < data.length; i++) {
+          graphData.push([data[i].state, data[i].positive]);
+        }
+        return data;
       })
       .then(result => this.setState({ gridTextAssets: result }))
       .catch(error =>
@@ -59,9 +71,24 @@ export default class COVID19 extends Component {
 
         <div className="container">
           <div className="row justify-content-center py-5">
-            <h1>Cases (US)</h1>
-          </div>
+            <h1></h1>
 
+            
+          </div>
+        </div>
+        
+        <div style={{ display: 'flex', maxWidth: 900 }}>
+          <Chart
+            width={'2000px'}
+            height={'1200px'}
+            chartType="PieChart"
+            loader={<div>Loading Chart</div>}
+            data={graphData}
+            options={{
+              title: 'Today: US Confirmed Cases',
+            }}
+            rootProps={{ 'data-testid': '1' }}
+          />
         </div>
         <WarningMessage
           open={WarningMessageOpen}
