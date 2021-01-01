@@ -9,7 +9,7 @@ export default function Footer() {
           <div className="col-8 col-md-5">
             <h5 className={styles.title}>Status:</h5>
             <p className={styles.description}>
-              This website is under construction
+              Currently in production
             </p>
           </div>
           <div className="col-2">
