@@ -12,6 +12,8 @@ export default function Blank() {
     </p>
     <p><br/>I am working on an interactive COVID dashboard right now. Check it out here: <a href="/COVID19">COVID19 Dash</a>
     </p>
+    <p><font size="2" color="#FF0000">(If the graph is not displayed properly, please refresh the page, I am working no the fix)
+    </font></p>
     <img src={turtle} alt="Turtle"></img>
   </div>
 </main>);

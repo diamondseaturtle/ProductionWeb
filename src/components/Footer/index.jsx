@@ -1,7 +1,8 @@
 ﻿import React from "react";
 import styles from "./footer.module.css";
 
-export default function Footer() {
+export default function Footer(props) {
+  const { counter } = props;
   return (
     <footer className={styles.footer}>
       <div className="container-fluid">
@@ -9,7 +10,7 @@ export default function Footer() {
           <div className="col-8 col-md-5">
             <h5 className={styles.title}>Status:</h5>
             <p className={styles.description}>
-              Currently in production
+              Currently in production, number of visitors: <font size="6" color="#00FFFF">{counter}</font>
             </p>
           </div>
           <div className="col-2">

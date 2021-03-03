@@ -20,4 +20,6 @@ CONSTANTS.ENDPOINT.LIST = "/api/list";
 
 CONSTANTS.ENDPOINT.MASTERDETAIL = "/api/masterdetail";
 
+CONSTANTS.ENDPOINT.VISITCOUNTER = "/api/visitCounter";
+
 export default CONSTANTS;

@@ -30,5 +30,10 @@ router.get(CONSTANTS.ENDPOINT.GRID, (req, res) => {
   res.json(portdata.textAssets);
 });
 
+//visitor counter
+router.get(CONSTANTS.ENDPOINT.VISITCOUNTER, function(req, res, next) {
+  mongoService.getAndUpdateCounter(req, res, next);
+});
+
 
 module.exports = router;

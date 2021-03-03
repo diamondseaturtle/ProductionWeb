@@ -1,10 +1,7 @@
 ﻿import React, { Component } from "react";
 import classnames from "classnames";
-import GridComponent from "./GridComponent";
 import WarningMessage from "../WarningMessage";
-import GreyBox from "../../images/GreyBox.svg";
 import styles from "./grid.module.css";
-import CONSTANTS from "../../constants";
 import Chart from "react-google-charts";
 
 var graphData = [];
@@ -103,8 +100,8 @@ export default class COVID19 extends Component {
           
 
           lineData.push([date, data[i].positive, data[i].death]);
-          var deltaPositive = (i == data.length-1) ? 0:(data[i].positive - data[i+1].positive);
-          var deltaDeath = (i == data.length-1) ? 0:(data[i].death - data[i+1].death);
+          var deltaPositive = (i === data.length-1) ? 0:(data[i].positive - data[i+1].positive);
+          var deltaDeath = (i === data.length-1) ? 0:(data[i].death - data[i+1].death);
           dailyCase.push([date, deltaPositive, deltaDeath]);
         }
         return data;
