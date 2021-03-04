@@ -124,7 +124,6 @@ export default class COVID19 extends Component {
 
   render() {
     const {
-      gridTextAssets,
       WarningMessageOpen,
       WarningMessageText
     } = this.state;
@@ -207,7 +206,6 @@ export default class COVID19 extends Component {
                 duration: 1000,
                 startup: true,
               },
-              legend: { position: 'right' },
               hAxis: { slantedText: false},
               vAxis: { title: 'Cases', viewWindowMode: 'maximized'},
               chartArea: { height: '80%', width: '80%' },
@@ -241,7 +239,6 @@ export default class COVID19 extends Component {
             loader={<div>Loading Column Chart</div>}
             data={dailyCase}
             options={{
-              chartArea: { height: '50%', width: '70%' },
               title: 'Washington State COVID-19 History: Daily New Cases and Deaths',
               animation:{
                 duration: 1000,
