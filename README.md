@@ -1,5 +1,5 @@
 ﻿## This site is live at https://diamondseaturtle.azurewebsites.net
- I am working on a message board using Azure CosmosDB, stay tuned...
+ Message Board is finished! Come check it out.
  
  ## Getting Started
 
