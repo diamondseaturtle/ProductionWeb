@@ -1,4 +1,5 @@
-﻿const mongoose = require("mongoose");
+﻿const { Timestamp } = require("mongodb");
+const mongoose = require("mongoose");
 const CONSTANTS = require("../constants");
 
 // TODO Web Template Studio: The Cosmos Mongo Database is set up to hold a collection called ListItems which contains documents
@@ -6,7 +7,9 @@ const CONSTANTS = require("../constants");
 const ListItem = mongoose.model(
   CONSTANTS.COSMOS.COLLECTION,
   new mongoose.Schema({
-    text: String
+    text: String,
+    time: Date,
+    author: String
   })
 );
 

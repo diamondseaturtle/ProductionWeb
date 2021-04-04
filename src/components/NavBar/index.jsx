@@ -12,7 +12,7 @@ export default function NavBar() {
       </div>
       <nav className="navbar navbar-expand-sm navbar-light border-bottom justify-content-between">
         <Link className="navbar-brand" to="/">
-          DiamondSeaTurtle
+          Claire Wang's website
         </Link>
         <div className="navbar-nav">
           <Link className="nav-item nav-link active" to="Home">
@@ -21,10 +21,11 @@ export default function NavBar() {
           <Link className="nav-item nav-link active" to="Portfolio">
             Art Portfolio
           </Link>
-
-
           <Link className="nav-item nav-link active" to="COVID19">
             COVID19
+          </Link>
+          <Link className="nav-item nav-link active" to="Message_Board">
+            Messages
           </Link>
         </div>
       </nav>

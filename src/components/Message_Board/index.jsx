@@ -57,7 +57,7 @@ export default class Message_Board extends Component {
       });
   }
 
-  handleAddListItem(textField) {
+  handleAddListItem(textField, authorField) { //TBC
     // Warning Pop Up if the user submits an empty message
     if (!textField) {
       this.setState({
@@ -66,12 +66,17 @@ export default class Message_Board extends Component {
       });
       return;
     }
+    if (!authorField)
+    {
+      authorField = "Anonymous";
+    }
 
     fetch(CONSTANTS.ENDPOINT.LIST, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        text: textField
+        text: textField,
+        author: authorField
       })
     })
       .then(response => {
@@ -110,9 +115,10 @@ export default class Message_Board extends Component {
       <main id="mainContent" className="container">
         <div className="row">
           <div className="col mt-5 p-0">
-            <h3>Bootstrap Message_Board Template</h3>
+            <h3>Leave a message :)</h3>
           </div>
           <div className="col-12 p-0">
+            
             <ListForm
               onAddListItem={this.handleAddListItem}
             />

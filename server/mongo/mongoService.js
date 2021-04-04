@@ -8,7 +8,7 @@ require("./mongoConnect").connect();
 // Find all list items from the nearest instance of Cosmos MongoDB
 function get(req, res, next) {
   const docquery = ListItem.find({})
-    .sort({ _id: -1 })
+    .sort({ time: -1 })
     .read(ReadPreference.NEAREST);
   docquery
     .exec()
@@ -20,7 +20,8 @@ function get(req, res, next) {
 
 // Post a new listItem to the ListItem collection in Cosmos MongoDB
 function create(req, res, next) {
-  const listItem = new ListItem({ text: req.body.text });
+  var ts = Date.now();
+  const listItem = new ListItem({ text: req.body.text, time: ts, author: req.body.author });
   listItem
     .save()
     .then(() => {
