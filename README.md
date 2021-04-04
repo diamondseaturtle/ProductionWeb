@@ -1,4 +1,7 @@
-﻿## Getting Started
+﻿## This site is live at https://diamondseaturtle.azurewebsites.net
+ I am working on a message board using Azure CosmosDB, stay tuned...
+ 
+ ## Getting Started
 
 In the root directory of the project...
 
