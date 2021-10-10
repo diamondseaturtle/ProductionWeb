@@ -1,7 +1,7 @@
 ﻿import React from "react";
 
 export default function ListItem(props) {
-  const { listItem, onDeleteListItem } = props;
+  const { listItem /*, onDeleteListItem*/ } = props;
   var tm = new Date(listItem.time);
   return (
     <div className="col-12 mb-3 border">

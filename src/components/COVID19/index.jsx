@@ -4,15 +4,41 @@ import WarningMessage from "../WarningMessage";
 import styles from "./grid.module.css";
 import Chart from "react-google-charts";
 
-var graphData = [];
 var lineData = [];
 var dailyCase = [];
-var status = {positive:"", death:"", date:""};
+var usDailyCase = [];
+
+//COVID-19 API endpoint
+const covidApiUrl = "https://api.covid19tracking.narrativa.com/api";
+
+//Helper to return today's date in format of yyyy-mm-dd
+function getDateStringFromNow(daysFromNow = 0)
+{
+  var today = new Date();
+  var date = new Date(new Date().setDate(today.getDate() + daysFromNow));
+
+  var dd = String(date.getDate()).padStart(2, '0');
+  var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var yyyy = date.getFullYear();
+  var returnDate = yyyy + '-' + mm + '-' + dd;
+
+  return returnDate;
+}
+
+function getDateFromNow(daysFromNow = 0)
+{
+  var today = new Date();
+  var date = new Date(new Date().setDate(today.getDate() + daysFromNow));
+  return date;
+}
+
 export default class COVID19 extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      gridTextAssets: [{ description: "", header: "", id: 0 }],
+      USData: this.props.defaulData,
+      WAData: [],
+      IsLoading: true,
       WarningMessageOpen: false,
       WarningMessageText: ""
     };
@@ -20,98 +46,29 @@ export default class COVID19 extends Component {
     this.handleWarningClose = this.handleWarningClose.bind(this);
   }
 
-
   // Get the text sample data from the back end
   componentDidMount() {
-    fetch("https://api.covidtracking.com/v1/us/current.json")
-      .then(response => {
-        if (!response.ok) {
-          throw Error(response.statusText);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        status.positive = data[0].positive.toLocaleString(
-          undefined, // leave undefined to use the browser's locale,
-                     // or use a string like 'en-US' to override it.
-          { minimumFractionDigits: 0 }
-        );
-        status.death = data[0].death.toLocaleString(
-          undefined, // leave undefined to use the browser's locale,
-                     // or use a string like 'en-US' to override it.
-          { minimumFractionDigits: 0 }
-        );
-        status.date = data[0].date.toString();
-        status.date = status.date.substr(0, 4) + "/" + status.date.substr(4,2) + "/" + status.date.substr(6,2);
-        return data;
-      })
-      .then(result => this.setState({ gridTextAssets: result }))
-      .catch(error =>
-        this.setState({
-          WarningMessageOpen: true,
-          WarningMessageText: `Request to get grid text failed: ${error}`
-        })
-      );
 
-    fetch("https://api.covidtracking.com/v1/states/current.json")
-      .then(response => {
-        if (!response.ok) {
-          throw Error(response.statusText);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        graphData = [
-          ['State', 'Confirmed Cases'],          
-        ];
-        for (var i = 0; i < data.length; i++) {
-          graphData.push([data[i].state, data[i].positive]);
-        }
-        return data;
-      })
-      .then(result => this.setState({ gridTextAssets: result }))
-      .catch(error =>
-        this.setState({
-          WarningMessageOpen: true,
-          WarningMessageText: `Request to get grid text failed: ${error}`
-        })
-      );
+    var today = getDateStringFromNow();
+    var prior30d = getDateStringFromNow(-60);
+    var us_url = covidApiUrl + '/' + today + "/country/us";
+    var wa_url = covidApiUrl + "/country/us/region/washington?date_from=" + prior30d + "&date_to=" + today;
 
-      fetch("https://api.covidtracking.com/v1/states/wa/daily.json")
-      .then(response => {
-        if (!response.ok) {
-          throw Error(response.statusText);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        lineData = [
-          ['Date', 'Confirmed Cases', 'Death'],          
-        ];
-        dailyCase = [
-          ['Date', 'Confirmed Cases', 'Death'],          
-        ];
-        for (var i = data.length-1 ; i >= 0; i--) {          
-          var dateString = data[i].date.toString();
-          var year        = dateString.substr(0,4);
-          var month       = dateString.substr(4,2);
-          var day         = dateString.substr(6,2);
-          var date        = new Date(year, month-1, day);
-          
-
-          lineData.push([date, data[i].positive, data[i].death]);
-          var deltaPositive = (i === data.length-1) ? 0:(data[i].positive - data[i+1].positive);
-          var deltaDeath = (i === data.length-1) ? 0:(data[i].death - data[i+1].death);
-          dailyCase.push([date, deltaPositive, deltaDeath]);
-        }
-        return data;
-      })
-      .then(result => this.setState({ gridTextAssets: result }))
-      .catch(error =>
+    Promise.all([
+      fetch(us_url).then(res => res.json()),
+      fetch(wa_url).then(res => res.json())])
+      .then(([usData, waData]) => {
         this.setState({
-          WarningMessageOpen: true,
-          WarningMessageText: `Request to get grid text failed: ${error}`
-        })
+            USData: usData.dates[today].countries.US,
+            WAData: waData.dates,
+            IsLoading: false
+          });
+      })
+      .catch(error =>
+          this.setState({
+            WarningMessageOpen: true,
+            WarningMessageText: `Request to get COVID19 data failed: ${error}`
+          })
       );
   }
 
@@ -127,20 +84,78 @@ export default class COVID19 extends Component {
       WarningMessageOpen,
       WarningMessageText
     } = this.state;
+
+    if (this.state.IsLoading)
+    {
+      return (
+        <main id="mainError">
+        <div className={classnames("text-center", styles.header)}>
+          <h1>Loading data, please wait...</h1>
+        </div>
+        </main>);
+    }
+
+    var us = this.state.USData;
+    var status = {positive:"", death:"", date:""};
+    // US case summary
+    status.positive = us.today_confirmed.toLocaleString(
+      undefined, // leave undefined to use the browser's locale,
+                  // or use a string like 'en-US' to override it.
+      { minimumFractionDigits: 0 }
+    );
+    status.death = us.today_deaths.toLocaleString(
+      undefined, // leave undefined to use the browser's locale,
+                  // or use a string like 'en-US' to override it.
+      { minimumFractionDigits: 0 }
+    );
+    status.date = getDateStringFromNow();
+    
+    // get per state/region data
+    var regions = us.regions;
+    var graphData = [
+      ['State', 'Confirmed Cases', 'Total Deaths'],          
+    ];
+    for (var i = 0; i < regions.length; i++) {
+      graphData.push([regions[i].name, regions[i].today_confirmed, regions[i].today_deaths]);
+    }
+
+    // WA state data
+
+    lineData = [
+      ['Date', 'Confirmed Cases', 'Death'],          
+    ];
+    dailyCase = [
+      ['Date', 'Confirmed Cases', 'Death'],          
+    ];
+    usDailyCase = [
+      ['Date', 'Confirmed Cases', 'Death'],          
+    ];
+    
+    for (var j = 0 ; j < 61; j++) {          
+      var d = getDateStringFromNow(-60 + j);
+      var unitedStates = this.state.WAData[d].countries.US
+      var confirmed = unitedStates.regions[0].today_confirmed;
+      var deaths = unitedStates.regions[0].today_deaths;
+      var newConfirmed = unitedStates.regions[0].today_new_confirmed;
+      var newDeaths = unitedStates.regions[0].today_new_deaths;
+      var date = getDateFromNow(-60 + j);
+
+      lineData.push([date, confirmed, deaths]);
+      dailyCase.push([date, newConfirmed, newDeaths]);
+      usDailyCase.push([date, unitedStates.today_new_confirmed, unitedStates.today_new_deaths]);
+    }
+    
     return (
       <main id="mainContent">
         <div className={classnames("text-center", styles.header)}>
           <h1>US and Washington State COVID-19 Interactive Dashboard</h1>
           <h2>As of {status.date}, US total postive cases: {status.positive}, total deaths: {status.death}</h2>
-          <a href="https://covidtracking.com/">Data source: COVID19 tracking project</a>
+          <a href="https://covid19tracking.narrativa.com/index_en.html">Data source: COVID19 tracking project</a>
         </div>
 
-        <div className="container">
-          <div className="row justify-content-center py-5">
-            <h2>US COVID-19 Case Distribution</h2>
-          </div>
+        <div className="row justify-content-center py-5" style={{ display: 'flex', maxWidth: 2000, maxHeight: 2000 }}>
+          <h2>US COVID-19 Case Distribution</h2>
         </div>
-        
         <div id="pie_chart" style={{ display: 'flex', maxWidth: 4000 }}>
           <Chart
             width={'2000px'}
@@ -152,7 +167,7 @@ export default class COVID19 extends Component {
               title: 'Total Positive Cases By States'
             }}
             rootProps={{ 'data-testid': '1' }}
-            chartWrapperParams={{ view: { columns: [0, 1] } }}
+            chartWrapperParams={{ view: { columns: [0, 1]} }}
             chartPackages={['corechart', 'controls']}
             controls={[
               {
@@ -169,10 +184,43 @@ export default class COVID19 extends Component {
             ]}
           />
         </div>  
-        <div className="row justify-content-center py-5">
+
+        <div className="row justify-content-center py-5" style={{ display: 'flex', maxWidth: 2000, maxHeight: 2000 }}>
+          <h2>US COVID-19 Deaths Distribution</h2>
+        </div>
+        <div id="pie_chart" style={{ display: 'flex', maxWidth: 4000 }}>
+          <Chart
+            width={'2000px'}
+            height={'1200px'}
+            chartType="PieChart"
+            loader={<div>Loading Chart</div>}
+            data={graphData}
+            options={{
+              title: 'Total Deaths By States'
+            }}
+            rootProps={{ 'data-testid': '9' }}
+            chartWrapperParams={{ view: { columns: [0, 2]} }}
+            chartPackages={['corechart', 'controls']}
+            controls={[
+              {
+                controlType: 'NumberRangeFilter',
+                options: {
+                  filterColumnIndex: 2,
+                  ui: {
+                    label: "Filter by # of deaths",
+                    unitIncrement: 100,
+                    blockIncrement: 1000,
+                  },
+                },
+              },
+            ]}
+          />
+        </div>  
+
+        <div className="row justify-content-center py-5" style={{ display: 'flex', maxWidth: 2000, maxHeight: 2000 }}>
             <h2>COVID-19 US Geographic View</h2>    
         </div>
-        <div id="state_geo_chart" style={{ display: 'flex', maxWidth: 4000 }}>
+        <div id="state_geo_chart" style={{ display: 'flex', maxWidth: 2000 }}>
           <Chart
             width={'100%'}
             height={'100%'}
@@ -188,10 +236,51 @@ export default class COVID19 extends Component {
             rootProps={{ 'data-testid': '1' }}
           />
         </div>
-        <div className="row justify-content-center py-5">
+        
+        <div className="row justify-content-center py-5" style={{ display: 'flex', maxWidth: 2000, maxHeight: 2000 }}>
+            <h2>United States 60 Days History</h2>    
+        </div>
+        <div id="us_daily_chart" style={{ display: 'flex', maxWidth: 2000, maxHeight: 2000}}>
+          <Chart
+            width={'100%'}
+            height={'100%'}
+            chartType="LineChart"
+            loader={<div>Loading Column Chart</div>}
+            data={usDailyCase}
+            options={{
+              title: 'United States 60 Days History: Daily New Cases and Deaths',
+              animation:{
+                duration: 1000,
+                startup: true,
+              },
+              vAxis: {title: 'Cases', viewWindowMode: 'maximized'},
+              chartArea: { height: '80%', width: '80%' },
+            }}
+            rootProps={{ 'data-testid': '1' }}
+            chartPackages={['corechart', 'controls']}
+            controls={[
+              {
+                controlType: 'ChartRangeFilter',
+                options: {
+                  filterColumnIndex: 0,
+                  ui: {
+                    chartType: 'LineChart',
+                    chartOptions: {
+                      chartArea: { width: '80%', height: '50%' },
+                      hAxis: { baselineColor: 'red' },
+                    },
+                  }
+                },
+                controlPosition: 'bottom'
+              },
+            ]}
+          />
+        </div>
+        
+        <div className="row justify-content-center py-5" style={{ display: 'flex', maxWidth: 2000, maxHeight: 2000 }}>
             <h2>COVID-19 Washington State Tracking</h2>    
         </div>
-        <div id="wa_line_chart" style={{ display: 'flex', maxWidth: 4000 }}>
+        <div id="wa_line_chart" style={{ display: 'flex', maxWidth: 2000, maxHeight: 2000 }}>
           <Chart
             width={'100%'}
             height={'100%'}
@@ -199,7 +288,7 @@ export default class COVID19 extends Component {
             loader={<div>Loading Line Chart</div>}
             data={lineData}
             options={{
-              title: 'Washington State COVID-19 History: Total Confirmed Cases and Deaths',
+              title: 'Washington State 60 Days History: Total Confirmed Cases and Deaths',
               curveType: 'function',
               legend: { position: 'bottom' },
               animation:{
@@ -231,7 +320,7 @@ export default class COVID19 extends Component {
             ]}
           />
         </div>
-        <div id="wa_daily_chart" style={{ display: 'flex', maxWidth: 4000 }}>
+        <div id="wa_daily_chart" style={{ display: 'flex', maxWidth: 2000, maxHeight: 2000}}>
           <Chart
             width={'100%'}
             height={'100%'}
@@ -239,7 +328,7 @@ export default class COVID19 extends Component {
             loader={<div>Loading Column Chart</div>}
             data={dailyCase}
             options={{
-              title: 'Washington State COVID-19 History: Daily New Cases and Deaths',
+              title: 'Washington State 60 Days History: Daily New Cases and Deaths',
               animation:{
                 duration: 1000,
                 startup: true,

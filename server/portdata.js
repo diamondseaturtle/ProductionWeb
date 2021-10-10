@@ -20,8 +20,8 @@ portdata.textAssets = [
     shortDescription: "A drawing of my original character.",
     longDescription: longPDesc,
     title: "RobotGirl",
-    status: "Closed",
-    shipTo: "Francisco Pérez-Olaeta",
+    status: " ",
+    shipTo: " ",
     orderTotal: 2490.0,
     orderDate: new Date(2017, 5, 24).toDateString(),
     id: 1,
@@ -31,24 +31,102 @@ portdata.textAssets = [
     shortDescription: "Fanart of the game Gris.",
     longDescription: longPDesc,
     title: "GRIS",
-    status: "Closed",
-    shipTo: "Soo Jung Lee",
+    status: " ",
+    shipTo: " ",
     orderTotal: 1760.0,
     orderDate: new Date(2017, 5, 24).toDateString(),
     id: 2,
     image: "doc.jpg"
   },
   {
-    shortDescription: "Landscape study of sorts.",
+    shortDescription: "Landscape study.",
     longDescription: longPDesc,
     title: "Field Testing",
-    status: "Closed",
-    shipTo: "Soo Jung Lee",
+    status: " ",
+    shipTo: " ",
     orderTotal: 1760.0,
     orderDate: new Date(2017, 5, 24).toDateString(),
     id: 2,
     image: "outhere.jpg"
-  }
+  },
+  {
+    shortDescription: "Art mural assignment from 2020.",
+    longDescription: longPDesc,
+    title: "Mural",
+    status: " ",
+    shipTo: " ",
+    orderTotal: 1760.0,
+    orderDate: new Date(2017, 5, 24).toDateString(),
+    id: 2,
+    image: "assn1mural.jpg"
+  },
+  {
+    shortDescription: "Art quote assignment from 2020.",
+    longDescription: longPDesc,
+    title: "Night",
+    status: " ",
+    shipTo: " ",
+    orderTotal: 1760.0,
+    orderDate: new Date(2017, 5, 24).toDateString(),
+    id: 2,
+    image: "assn2quote.jpg"
+  },
+  {
+    shortDescription: "Literal idioms assignment from sophmore english.",
+    longDescription: longPDesc,
+    title: "Cry me a river",
+    status: " ",
+    shipTo: " ",
+    orderTotal: 1760.0,
+    orderDate: new Date(2017, 5, 24).toDateString(),
+    id: 2,
+    image: "cry.jpg"
+  },
+  {
+    shortDescription: "Art assignment from sophomore year.",
+    longDescription: longPDesc,
+    title: "Supermarket",
+    status: " ",
+    shipTo: " ",
+    orderTotal: 1760.0,
+    orderDate: new Date(2017, 5, 24).toDateString(),
+    id: 2,
+    image: "super.jpg"
+  },
+  {
+    shortDescription: "Landscape art assignment from sophomore year.",
+    longDescription: longPDesc,
+    title: "Mercury",
+    status: " ",
+    shipTo: " ",
+    orderTotal: 1760.0,
+    orderDate: new Date(2017, 5, 24).toDateString(),
+    id: 2,
+    image: "yay.jpg"
+  },
+  {
+    shortDescription: "Jar surrealism.",
+    longDescription: longPDesc,
+    title: "Starry",
+    status: " ",
+    shipTo: " ",
+    orderTotal: 1760.0,
+    orderDate: new Date(2017, 5, 24).toDateString(),
+    id: 2,
+    image: "doc2.jpg"
+  },
+  {
+    shortDescription: "Eye study.",
+    longDescription: longPDesc,
+    title: "Eyes",
+    status: " ",
+    shipTo: " ",
+    orderTotal: 1760.0,
+    orderDate: new Date(2017, 5, 24).toDateString(),
+    id: 2,
+    image: "nowmbecareful.jpg"
+  },
+  
 ];
 
 module.exports = portdata;

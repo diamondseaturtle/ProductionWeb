@@ -19,7 +19,7 @@ export default function NavBar() {
             Home
           </Link>
           <Link className="nav-item nav-link active" to="Portfolio">
-            Art Portfolio
+            My Drawings
           </Link>
           <Link className="nav-item nav-link active" to="COVID19">
             COVID19
