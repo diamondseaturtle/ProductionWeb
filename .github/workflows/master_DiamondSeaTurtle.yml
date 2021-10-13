@@ -19,7 +19,7 @@ jobs:
       - name: Set up Node.js version
         uses: actions/setup-node@v1
         with:
-          node-version: 'node|10.14'
+          node-version: 'node|10.*'
 
       - name: npm install, build, and test
         run: |
