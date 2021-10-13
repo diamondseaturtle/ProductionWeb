@@ -4,29 +4,29 @@
   "private": true,
   "dependencies": {
     "body-parser": "^1.18.3",
-    "bootstrap": "^4.4.1",
-    "classnames": "^2.2.6",
-    "cookie-parser": "^1.4.3",
+    "bootstrap": "^4.6.0",
+    "classnames": "^2.3.1",
+    "cookie-parser": "^1.4.5",
     "debug": "~4.1.1",
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
     "fs-extra": "8.1.0",
-    "mongodb": "^3.5.3",
-    "mongoose": "^5.9.2",
-    "morgan": "^1.9.1",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
+    "mongodb": "^3.7.2",
+    "mongoose": "^5.13.11",
+    "morgan": "^1.10.0",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
     "react-google-charts": "^3.0.15",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "^3.4.0"
+    "react-scripts": "^4.0.3"
   },
   "eslintConfig": {
     "extends": "react-app"
   },
   "devDependencies": {
-    "concurrently": "^5.2.0",
+    "concurrently": "^6.3.0",
     "google-charts": "^2.0.0",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.13"
   },
   "scripts": {
     "start": "concurrently \"yarn start-frontend || npm run start-frontend\" \"yarn start-backend || npm run start-backend\"",
