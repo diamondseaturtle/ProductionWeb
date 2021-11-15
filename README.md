@@ -1,5 +1,5 @@
 ﻿## This site is live at https://diamondseaturtle.azurewebsites.net
- Message Board is finished! Come check it out.
+ Website fixed + new updates!
  
  ## Getting Started
 
